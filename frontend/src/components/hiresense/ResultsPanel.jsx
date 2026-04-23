@@ -45,7 +45,7 @@ export default function ResultsPanel({ result, apiBase }) {
             </div>
             <p className="mt-6 text-zinc-600 leading-relaxed max-w-md">{summary}</p>
             
-              href={`${apiBase}/report/${id}`} target="_blank" rel="noopener noreferrer"
+             <a href={`${apiBase}/report/${id}`} target="_blank" rel="noopener noreferrer"
               className="mt-7 inline-flex items-center gap-2 bg-zinc-900 hover:bg-blue-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors"
             >
               <Download className="w-4 h-4" /> Download PDF report
