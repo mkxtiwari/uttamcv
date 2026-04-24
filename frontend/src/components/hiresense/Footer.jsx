@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="w-6 h-6 rounded-md bg-zinc-900 flex items-center justify-center">
             <Sparkles className="w-3 h-3 text-white" />
           </div>
-          <span className="font-heading font-medium text-zinc-700">HireSense.AI</span>
+          <span className="font-heading font-medium text-zinc-700">UttamCV</span>
           <span className="text-zinc-400">· ATS-grade analysis in seconds</span>
         </div>
         <div className="text-xs">© {new Date().getFullYear()} UttamCV All rights reserved.</div>
