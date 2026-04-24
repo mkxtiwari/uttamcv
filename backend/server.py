@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
+from openai import OpenAI
 import os
 import io
 import json
@@ -33,6 +34,10 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
+)
 
 # Single app instance with CORS middleware
 app = FastAPI(title="UttamCV")
@@ -111,6 +116,44 @@ JSON schema:
 
 
 def _parse_llm_json(raw: str) -> dict:
+    async def analyze_with_ai(resume_text: str, job_description: str):
+    prompt = f"""
+Return ONLY valid JSON.
+
+Compare resume with job description:
+
+{{
+  "match_score": number,
+  "summary": "...",
+  "matched_skills": [],
+  "missing_skills": [],
+  "suggestions": [],
+  "strengths": []
+}}
+
+Resume:
+{resume_text}
+
+Job Description:
+{job_description}
+"""
+
+    response = client.chat.completions.create(
+        model="openai/gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+        extra_headers={
+            "HTTP-Referer": "https://uttamcv.vercel.app",
+            "X-Title": "UttamCV"
+        }
+    )
+
+    content = response.choices[0].message.content
+
+    # Clean JSON
+    content = re.sub(r"```json|```", "", content).strip()
+
+    return json.loads(content)
     cleaned = raw.strip()
     cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
     cleaned = re.sub(r"\s*```$", "", cleaned)
@@ -193,14 +236,18 @@ async def analyze(
     if len(text.strip()) < 50:
         raise HTTPException(status_code=400, detail="Could not extract enough resume text. Please try another file.")
 
+ try:
+    analysis = await analyze_with_ai(text, job_description)
+except Exception as e:
+    print("AI ERROR:", e)
     analysis = {
-    "match_score": 75,
-    "summary": "Good match for the role.",
-    "matched_skills": ["Python", "DSA"],
-    "missing_skills": ["System Design"],
-    "suggestions": ["Add more projects", "Improve formatting"],
-    "strengths": ["Strong fundamentals"]
-}
+        "match_score": 50,
+        "summary": "AI failed, fallback result",
+        "matched_skills": [],
+        "missing_skills": [],
+        "suggestions": [],
+        "strengths": []
+    }
 
     doc_id = str(uuid.uuid4())
     created_at = datetime.now(timezone.utc).isoformat()
