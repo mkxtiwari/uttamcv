@@ -34,19 +34,19 @@ db = client[os.environ['DB_NAME']]
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
-app = FastAPI(title="HireSense AI")
+app = FastAPI(title="UttamCV")
 from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="UttamCV")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://uttamcv.vercel.app",
-        "https://uttamcv-production.up.railway.app"
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 api_router = APIRouter(prefix="/api")
 
 
