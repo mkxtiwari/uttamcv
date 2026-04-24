@@ -212,7 +212,7 @@ async def analyze(
         "created_at": created_at,
         **analysis,
     }
-    await db.analyses.insert_one(doc)
+    print("Skipping DB save")
 
     return AnalysisResult(
         id=doc_id,
