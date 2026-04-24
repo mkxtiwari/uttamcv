@@ -15,7 +15,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 mb-6"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Powered by Claude Sonnet 4.5 · ATS-grade analysis
+            Powered by AI · ATS-grade analysis
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
