@@ -66,29 +66,29 @@ class AnalysisResult(BaseModel):
 
 
 def extract_text_from_pdf(data: bytes) -> str:
-text_parts = []
-with pdfplumber.open(io.BytesIO(data)) as pdf:
+    text_parts = []
+    with pdfplumber.open(io.BytesIO(data)) as pdf:
     for page in pdf.pages:
-        page_text = page.extract_text() or ""
-        text_parts.append(page_text)
-return "\n".join(text_parts).strip()
+    page_text = page.extract_text() or ""
+    text_parts.append(page_text)
+    return "\n".join(text_parts).strip()
 
 
 def extract_text_from_docx(data: bytes) -> str:
-f = io.BytesIO(data)
-document = docx.Document(f)
-return "\n".join(p.text for p in document.paragraphs).strip()
+    f = io.BytesIO(data)
+    document = docx.Document(f)
+    return "\n".join(p.text for p in document.paragraphs).strip()
 
 
 def extract_text_from_file(filename: str, data: bytes) -> str:
-lower = filename.lower()
-if lower.endswith('.pdf'):
+    lower = filename.lower()
+    if lower.endswith('.pdf'):
     return extract_text_from_pdf(data)
-if lower.endswith('.docx'):
+    if lower.endswith('.docx'):
     return extract_text_from_docx(data)
-if lower.endswith('.txt'):
+    if lower.endswith('.txt'):
     return data.decode('utf-8', errors='ignore').strip()
-raise HTTPException(status_code=400, detail="Unsupported file format. Please upload PDF, DOCX, or TXT.")
+    raise HTTPException(status_code=400, detail="Unsupported file format. Please upload PDF, DOCX, or TXT.")
 
 
 SYSTEM_PROMPT = """You are HireSense AI, an expert ATS (Applicant Tracking System) and career coach.
@@ -116,16 +116,16 @@ JSON schema:
 
 
 def _parse_llm_json(raw: str) -> dict:
-cleaned = raw.strip()
-cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
-cleaned = re.sub(r"\s*```$", "", cleaned)
+    cleaned = raw.strip()
+    cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
+    cleaned = re.sub(r"\s*```$", "", cleaned)
 try:
     return json.loads(cleaned)
 except Exception:
     pass
 
 match = re.search(r"\{[\s\S]*\}", cleaned)
-if match:
+    if match:
     return json.loads(match.group(0))
 
 raise ValueError("Could not parse model JSON output")
