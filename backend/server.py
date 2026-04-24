@@ -41,7 +41,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://uttamcv.vercel.app",
-        "http://localhost:3000"
+        "https://uttamcv-production.up.railway.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
