@@ -16,6 +16,7 @@ export default function HomePage() {
   const resultsRef = useRef(null);
 
   const handleAnalyze = async ({ file, jobDescription, resumeText }) => {
+    if (loading) return;
     if (!jobDescription || jobDescription.trim().length < 20) {
       toast.error("Please paste a job description (min 20 characters).");
       return;
