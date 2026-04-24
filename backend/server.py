@@ -116,7 +116,7 @@ JSON schema:
 
 
 def _parse_llm_json(raw: str) -> dict:
-    async def analyze_with_ai(resume_text: str, job_description: str):
+   async def analyze_with_ai(resume_text: str, job_description: str):
     prompt = f"""
 Return ONLY valid JSON.
 
@@ -142,15 +142,13 @@ Job Description:
         model="openai/gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
-        extra_headers={
+        extra_headers={{
             "HTTP-Referer": "https://uttamcv.vercel.app",
             "X-Title": "UttamCV"
-        }
+        }}
     )
 
     content = response.choices[0].message.content
-
-    # Clean JSON
     content = re.sub(r"```json|```", "", content).strip()
 
     return json.loads(content)
