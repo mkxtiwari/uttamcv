@@ -40,9 +40,8 @@ export default function HomePage() {
       }
 
       const { data } = await axios.post(`${API}/analyze`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-        timeout: 120000,
-      });
+  timeout: 120000,
+});
 
       setResult(data);
       toast.success("Analysis complete!");
