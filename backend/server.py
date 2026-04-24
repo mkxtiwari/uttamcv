@@ -130,40 +130,38 @@ def _parse_llm_json(raw: str) -> dict:
 
     raise ValueError("Could not parse model JSON output")
 
-   async def analyze_with_ai(resume_text: str, job_description: str):
-       prompt = f"""
-Return ONLY valid JSON.
+ async def analyze_with_ai(resume_text: str, job_description: str):
+    prompt = f"""
+    Return ONLY valid JSON.
 
-{{
-  "match_score": number,
-  "summary": "...",
-  "matched_skills": [],
-  "missing_skills": [],
-  "suggestions": [],
-  "strengths": []
-}}
+    Compare resume with job description:
 
-Resume:
-{resume_text}
+    {{
+        "match_score": number,
+        "summary": "...",
+        "matched_skills": [],
+        "missing_skills": [],
+        "suggestions": [],
+        "strengths": []
+    }}
 
-Job Description:
-{job_description}
-"""
+    Resume:
+    {resume_text}
+
+    Job Description:
+    {job_description}
+    """
 
     response = client.chat.completions.create(
         model="openai/gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
-        extra_headers={
-            "HTTP-Referer": "https://uttamcv.vercel.app",
-            "X-Title": "UttamCV"
-        }
     )
 
     content = response.choices[0].message.content
-    content = re.sub(r"```json|```", "", content).strip()
+    data = _parse_llm_json(content)
 
-    return json.loads(content)
+    return data
 
 
 @api_router.get("/")
