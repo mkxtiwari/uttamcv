@@ -54,15 +54,15 @@ api_router = APIRouter(prefix="/api")
 
 
 class AnalysisResult(BaseModel):
-id: str
-match_score: int
-summary: str
-matched_skills: List[str]
-missing_skills: List[str]
-suggestions: List[str]
-strengths: List[str]
-resume_filename: Optional[str] = None
-created_at: str
+    id: str
+    match_score: int
+    summary: str
+    matched_skills: List[str]
+    missing_skills: List[str]
+    suggestions: List[str]
+    strengths: List[str]
+    resume_filename: Optional[str] = None
+    created_at: str
 
 
 def extract_text_from_pdf(data: bytes) -> str:
