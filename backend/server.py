@@ -130,8 +130,8 @@ def _parse_llm_json(raw: str) -> dict:
 
     raise ValueError("Could not parse model JSON output")
 
-    async def analyze_with_ai(resume_text: str, job_description: str):
-    prompt = f"""
+   async def analyze_with_ai(resume_text: str, job_description: str):
+       prompt = f"""
 Return ONLY valid JSON.
 
 {{
