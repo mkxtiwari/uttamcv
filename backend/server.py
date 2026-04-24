@@ -116,11 +116,23 @@ JSON schema:
 
 
 def _parse_llm_json(raw: str) -> dict:
-   async def analyze_with_ai(resume_text: str, job_description: str):
+    cleaned = raw.strip()
+    cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
+    cleaned = re.sub(r"\s*```$", "", cleaned)
+    try:
+        return json.loads(cleaned)
+    except Exception:
+        pass
+
+    match = re.search(r"\{[\s\S]*\}", cleaned)
+    if match:
+        return json.loads(match.group(0))
+
+    raise ValueError("Could not parse model JSON output")
+
+    async def analyze_with_ai(resume_text: str, job_description: str):
     prompt = f"""
 Return ONLY valid JSON.
-
-Compare resume with job description:
 
 {{
   "match_score": number,
@@ -142,66 +154,16 @@ Job Description:
         model="openai/gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
-        extra_headers={{
+        extra_headers={
             "HTTP-Referer": "https://uttamcv.vercel.app",
             "X-Title": "UttamCV"
-        }}
+        }
     )
 
     content = response.choices[0].message.content
     content = re.sub(r"```json|```", "", content).strip()
 
     return json.loads(content)
-    cleaned = raw.strip()
-    cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
-    cleaned = re.sub(r"\s*```$", "", cleaned)
-    try:
-        return json.loads(cleaned)
-    except Exception:
-        pass
-    match = re.search(r"\{[\s\S]*\}", cleaned)
-    if match:
-        return json.loads(match.group(0))
-    raise ValueError("Could not parse model JSON output")
-
-
-async def analyze_with_llm(resume_text: str, job_description: str) -> dict:
-    if not EMERGENT_LLM_KEY:
-        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not configured")
-
-    session_id = f"hiresense-{uuid.uuid4()}"
-    chat = LlmChat(
-        api_key=EMERGENT_LLM_KEY,
-        session_id=session_id,
-        system_message=SYSTEM_PROMPT,
-    ).with_model("anthropic", "claude-sonnet-4-5-20250929")
-
-    user_text = f"""RESUME:
-----
-{resume_text[:15000]}
-----
-
-JOB DESCRIPTION:
-----
-{job_description[:8000]}
-----
-
-Return the JSON analysis now."""
-
-    message = UserMessage(text=user_text)
-    response = await chat.send_message(message)
-    data = _parse_llm_json(response)
-
-    score = int(data.get("match_score", 0))
-    score = max(0, min(100, score))
-    return {
-        "match_score": score,
-        "summary": str(data.get("summary", ""))[:2000],
-        "matched_skills": [str(s) for s in (data.get("matched_skills") or [])][:40],
-        "missing_skills": [str(s) for s in (data.get("missing_skills") or [])][:40],
-        "suggestions": [str(s) for s in (data.get("suggestions") or [])][:20],
-        "strengths": [str(s) for s in (data.get("strengths") or [])][:20],
-    }
 
 
 @api_router.get("/")
