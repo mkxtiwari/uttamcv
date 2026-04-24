@@ -9,7 +9,7 @@ export default function Header() {
             <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
           <span className="font-heading text-lg font-semibold tracking-tight">
-            HireSense<span className="text-blue-600">.AI</span>
+            UttamCV<span className="text-blue-600">.AI</span>
           </span>
         </a>
         <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-600">

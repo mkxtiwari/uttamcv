@@ -11,7 +11,7 @@ export default function Footer() {
           <span className="font-heading font-medium text-zinc-700">HireSense.AI</span>
           <span className="text-zinc-400">· ATS-grade analysis in seconds</span>
         </div>
-        <div className="text-xs">© {new Date().getFullYear()} HireSense AI. Built with Claude Sonnet 4.5.</div>
+        <div className="text-xs">© {new Date().getFullYear()} UttamCV All rights reserved.</div>
       </div>
     </footer>
   );

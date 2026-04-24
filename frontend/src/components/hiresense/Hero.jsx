@@ -32,7 +32,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }}
             className="mt-6 text-lg text-zinc-600 max-w-xl leading-relaxed"
           >
-            HireSense AI reads your resume like an expert recruiter, scores it against any job
+            UttamCV reads your resume like an expert recruiter, scores it against any job
             description, and tells you exactly what's missing — with an actionable plan to fix it.
           </motion.p>
           <motion.div
