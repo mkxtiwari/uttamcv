@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import io
@@ -34,9 +34,7 @@ db = client[os.environ['DB_NAME']]
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
-app = FastAPI(title="UttamCV")
-from fastapi.middleware.cors import CORSMiddleware
-
+# Single app instance with CORS middleware
 app = FastAPI(title="UttamCV")
 
 app.add_middleware(
@@ -313,20 +311,6 @@ async def download_report(analysis_id: str):
 
 
 app.include_router(api_router)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], 
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
