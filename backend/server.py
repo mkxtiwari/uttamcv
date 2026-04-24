@@ -3,7 +3,6 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
-from emergentintegrations.llm.chat import LlmChat, UserMessage
 import os
 import io
 import json
@@ -196,7 +195,14 @@ async def analyze(
     if len(text.strip()) < 50:
         raise HTTPException(status_code=400, detail="Could not extract enough resume text. Please try another file.")
 
-    analysis = await analyze_with_llm(text, job_description)
+    analysis = {
+    "match_score": 75,
+    "summary": "Good match for the role.",
+    "matched_skills": ["Python", "DSA"],
+    "missing_skills": ["System Design"],
+    "suggestions": ["Add more projects", "Improve formatting"],
+    "strengths": ["Strong fundamentals"]
+}
 
     doc_id = str(uuid.uuid4())
     created_at = datetime.now(timezone.utc).isoformat()
