@@ -8,9 +8,7 @@ import AnalyzerForm from "../components/hiresense/AnalyzerForm";
 import ResultsPanel from "../components/hiresense/ResultsPanel";
 import Footer from "../components/hiresense/Footer";
 
-const API = process.env.REACT_APP_BACKEND_URL
-  ? `${process.env.REACT_APP_BACKEND_URL}/api`
-  : "http://localhost:8000/api";
+const API = "https://uttamcv-production.up.railway.app/api";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false);
