@@ -3,12 +3,12 @@ import { ArrowRight, ShieldCheck, Zap, FileCheck2 } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-40 md:pb-28 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full bg-blue-100/40 blur-3xl" />
         <div className="absolute top-40 -left-32 w-[420px] h-[420px] rounded-full bg-emerald-100/40 blur-3xl" />
       </div>
-      <div className="relative max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 items-center">
         <div className="lg:col-span-7">
           <motion.div
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
@@ -19,7 +19,7 @@ export default function Hero() {
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
-            className="font-heading text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tighter leading-[1.02] text-zinc-900"
+            className="font-heading text-3xl sm:text-5xl lg:text-7xl font-semibold tracking-tighter leading-[1.1] text-zinc-900"
           >
             Beat the bots.<br />
             <span className="text-zinc-400">Land the </span>
@@ -30,14 +30,14 @@ export default function Hero() {
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }}
-            className="mt-6 text-lg text-zinc-600 max-w-xl leading-relaxed"
+            className="mt-4 sm:mt-6 text-sm sm:text-base text-zinc-600 max-w-xl leading-relaxed"
           >
             UttamCV reads your resume like an expert recruiter, scores it against any job
             description, and tells you exactly what's missing — with an actionable plan to fix it.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 flex flex-wrap items-center gap-4"
+            className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4"
           >
             <a href="#analyzer" className="inline-flex items-center gap-2 bg-zinc-900 hover:bg-blue-600 text-white px-6 py-3.5 rounded-lg font-medium transition-all hover:translate-y-[-1px] hover:shadow-lg">
               Analyze my resume <ArrowRight className="w-4 h-4" />
@@ -46,7 +46,7 @@ export default function Hero() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.35 }}
-            className="mt-10 grid grid-cols-3 gap-5 max-w-xl"
+            className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 max-w-xl"
           >
             {[
               { Icon: Zap, label: "~15s", sub: "avg. analysis" },
@@ -73,7 +73,7 @@ export default function Hero() {
             <img
               src="https://images.unsplash.com/photo-1698047681432-006d2449c631?crop=entropy&cs=srgb&fm=jpg&w=940&q=85"
               alt="Candidate reviewing resume"
-              className="w-full h-[440px] object-cover"
+              className="w-full h-64 sm:h-[380px] lg:h-[440px] object-cover"
             />
             <div className="absolute top-5 left-5 right-5 flex items-center justify-between">
               <div className="bg-white/95 backdrop-blur rounded-lg px-3 py-2 border border-zinc-200 flex items-center gap-2 shadow-sm">
